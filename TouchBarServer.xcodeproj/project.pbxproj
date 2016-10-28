@@ -1,0 +1,352 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		28D7A97B1DC3FADA00BC812A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A97A1DC3FADA00BC812A /* AppDelegate.m */; };
+		28D7A97E1DC3FADA00BC812A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A97D1DC3FADA00BC812A /* main.m */; };
+		28D7A9801DC3FADA00BC812A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28D7A97F1DC3FADA00BC812A /* Assets.xcassets */; };
+		28D7A98B1DC3FC3000BC812A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D7A98A1DC3FC3000BC812A /* MainMenu.xib */; };
+		28D7A98E1DC401C000BC812A /* SkyLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D7A98D1DC401C000BC812A /* SkyLight.framework */; };
+		28D7AA4F1DC54ED900BC812A /* libvncserver.0.9.10.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */; };
+		28F245FB1DC54EED00923CAD /* libvncserver.0.9.10.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		28F245FD1DC6264C00923CAD /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F245FC1DC6264C00923CAD /* DFRFoundation.framework */; };
+		28F245FF1DC634EA00923CAD /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F245FE1DC634E900923CAD /* IOKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		28D7AA4C1DC54CCA00BC812A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				28F245FB1DC54EED00923CAD /* libvncserver.0.9.10.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		28D7A9761DC3FADA00BC812A /* TouchBarServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchBarServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D7A9791DC3FADA00BC812A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		28D7A97A1DC3FADA00BC812A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		28D7A97D1DC3FADA00BC812A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		28D7A97F1DC3FADA00BC812A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		28D7A9841DC3FADA00BC812A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28D7A98A1DC3FC3000BC812A /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		28D7A98D1DC401C000BC812A /* SkyLight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SkyLight.framework; path = ../../../../System/Library/PrivateFrameworks/SkyLight.framework; sourceTree = "<group>"; };
+		28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncserver.0.9.10.dylib; path = TouchBarServer/rfb/libvncserver.0.9.10.dylib; sourceTree = "<group>"; };
+		28F245FC1DC6264C00923CAD /* DFRFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DFRFoundation.framework; path = ../../../../System/Library/PrivateFrameworks/DFRFoundation.framework; sourceTree = "<group>"; };
+		28F245FE1DC634E900923CAD /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		28D7A9731DC3FADA00BC812A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28F245FF1DC634EA00923CAD /* IOKit.framework in Frameworks */,
+				28F245FD1DC6264C00923CAD /* DFRFoundation.framework in Frameworks */,
+				28D7AA4F1DC54ED900BC812A /* libvncserver.0.9.10.dylib in Frameworks */,
+				28D7A98E1DC401C000BC812A /* SkyLight.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28D7A96D1DC3FADA00BC812A = {
+			isa = PBXGroup;
+			children = (
+				28D7A9781DC3FADA00BC812A /* TouchBarServer */,
+				28D7A9771DC3FADA00BC812A /* Products */,
+				28D7A98C1DC401C000BC812A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		28D7A9771DC3FADA00BC812A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28D7A9761DC3FADA00BC812A /* TouchBarServer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28D7A9781DC3FADA00BC812A /* TouchBarServer */ = {
+			isa = PBXGroup;
+			children = (
+				28D7A9791DC3FADA00BC812A /* AppDelegate.h */,
+				28D7A97A1DC3FADA00BC812A /* AppDelegate.m */,
+				28D7A97F1DC3FADA00BC812A /* Assets.xcassets */,
+				28D7A9841DC3FADA00BC812A /* Info.plist */,
+				28D7A98A1DC3FC3000BC812A /* MainMenu.xib */,
+				28D7A97C1DC3FADA00BC812A /* Supporting Files */,
+			);
+			path = TouchBarServer;
+			sourceTree = "<group>";
+		};
+		28D7A97C1DC3FADA00BC812A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				28D7A97D1DC3FADA00BC812A /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		28D7A98C1DC401C000BC812A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28F245FE1DC634E900923CAD /* IOKit.framework */,
+				28D7A98D1DC401C000BC812A /* SkyLight.framework */,
+				28F245FC1DC6264C00923CAD /* DFRFoundation.framework */,
+				28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		28D7A9751DC3FADA00BC812A /* TouchBarServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28D7A9871DC3FADA00BC812A /* Build configuration list for PBXNativeTarget "TouchBarServer" */;
+			buildPhases = (
+				28D7A9721DC3FADA00BC812A /* Sources */,
+				28D7A9731DC3FADA00BC812A /* Frameworks */,
+				28D7A9741DC3FADA00BC812A /* Resources */,
+				28D7AA4C1DC54CCA00BC812A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TouchBarServer;
+			productName = RemoteTouchBar;
+			productReference = 28D7A9761DC3FADA00BC812A /* TouchBarServer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		28D7A96E1DC3FADA00BC812A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = namedfork;
+				TargetAttributes = {
+					28D7A9751DC3FADA00BC812A = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 28D7A9711DC3FADA00BC812A /* Build configuration list for PBXProject "TouchBarServer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 28D7A96D1DC3FADA00BC812A;
+			productRefGroup = 28D7A9771DC3FADA00BC812A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				28D7A9751DC3FADA00BC812A /* TouchBarServer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		28D7A9741DC3FADA00BC812A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D7A9801DC3FADA00BC812A /* Assets.xcassets in Resources */,
+				28D7A98B1DC3FC3000BC812A /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		28D7A9721DC3FADA00BC812A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D7A97E1DC3FADA00BC812A /* main.m in Sources */,
+				28D7A97B1DC3FADA00BC812A /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		28D7A9851DC3FADA00BC812A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/TouchBarServer",
+					"$(SRCROOT)/libvncserver",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		28D7A9861DC3FADA00BC812A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/TouchBarServer",
+					"$(SRCROOT)/libvncserver",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		28D7A9881DC3FADA00BC812A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				INFOPLIST_FILE = TouchBarServer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks /Applications/Xcode.app/Contents/Frameworks /Applications/Xcode.app/Contents/SharedFrameworks /Applications/Xcode.app/Contents/OtherFrameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libvncserver",
+					"$(PROJECT_DIR)/TouchBarServer/rfb",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.namedfork.TouchBarServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		28D7A9891DC3FADA00BC812A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				INFOPLIST_FILE = TouchBarServer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks /Applications/Xcode.app/Contents/Frameworks /Applications/Xcode.app/Contents/SharedFrameworks /Applications/Xcode.app/Contents/OtherFrameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libvncserver",
+					"$(PROJECT_DIR)/TouchBarServer/rfb",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.namedfork.TouchBarServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		28D7A9711DC3FADA00BC812A /* Build configuration list for PBXProject "TouchBarServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28D7A9851DC3FADA00BC812A /* Debug */,
+				28D7A9861DC3FADA00BC812A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28D7A9871DC3FADA00BC812A /* Build configuration list for PBXNativeTarget "TouchBarServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28D7A9881DC3FADA00BC812A /* Debug */,
+				28D7A9891DC3FADA00BC812A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 28D7A96E1DC3FADA00BC812A /* Project object */;
+}
