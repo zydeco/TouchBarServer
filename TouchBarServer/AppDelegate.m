@@ -80,7 +80,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
+    DFRSetStatus(0);
+    if (touchBarStream) {
+        CGDisplayStreamStop(touchBarStream);
+        CFRelease(touchBarStream);
+    }
 }
 
 - (void)startVNCServer:(IOSurfaceRef)buffer {
