@@ -121,12 +121,13 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)startVNCServer:(IOSurfaceRef)buffer {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     rfbScreen = rfbGetScreen(NULL, NULL,
                              (int)IOSurfaceGetWidth(buffer),
                              (int)IOSurfaceGetHeight(buffer), 8, 3, 4);
     rfbScreen->frameBuffer = malloc( IOSurfaceGetBytesPerRow(buffer) * IOSurfaceGetHeight(buffer));
     rfbScreen->desktopName = "Touch Bar";
-    rfbScreen->port = 5999;
+    rfbScreen->port = (int)[defaults integerForKey:@"port"];
     rfbScreen->alwaysShared = true;
     rfbScreen->cursor = NULL;
     rfbScreen->paddedWidthInBytes = (int)IOSurfaceGetBytesPerRow(buffer);
@@ -134,6 +135,12 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     rfbScreen->serverFormat.greenShift = 8;
     rfbScreen->serverFormat.blueShift = 0;
     rfbScreen->ptrAddEvent = PtrAddEvent;
+    NSString *password = [defaults stringForKey:@"password"];
+    if (password) {
+        NSString *tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:@"TouchBarServer.vncpassword"];
+        rfbEncryptAndStorePasswd((char*)password.UTF8String, tmpfile.fileSystemRepresentation);
+        rfbScreen->authPasswdData = strdup(tmpfile.fileSystemRepresentation);
+    }
     rfbInitServer(rfbScreen);
     rfbRunEventLoop(rfbScreen, 40, true);
 }
