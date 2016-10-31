@@ -51,7 +51,9 @@ void CGSPostEventRecord(int32_t connID, CGSEventRecordRef recordPointer, int fla
 @end
 
 void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
-    [(AppDelegate*)NSApp.delegate rfbClient:cl mouseEventAtPoint:CGPointMake(x, y) buttonMask:buttonMask];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [(AppDelegate*)NSApp.delegate rfbClient:cl mouseEventAtPoint:CGPointMake(x, y) buttonMask:buttonMask];
+    });
 }
 
 @implementation AppDelegate
