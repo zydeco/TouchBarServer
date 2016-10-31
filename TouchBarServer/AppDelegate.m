@@ -161,7 +161,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     NSString *password = [defaults stringForKey:@"password"];
     if (password) {
         NSString *tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:@"TouchBarServer.vncpassword"];
-        rfbEncryptAndStorePasswd((char*)password.UTF8String, tmpfile.fileSystemRepresentation);
+        rfbEncryptAndStorePasswd((char*)password.UTF8String, (char*)tmpfile.fileSystemRepresentation);
         rfbScreen->authPasswdData = strdup(tmpfile.fileSystemRepresentation);
     }
     rfbInitServer(rfbScreen);
