@@ -60,7 +60,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 {
     CGDisplayStreamRef touchBarStream;
     rfbScreenInfoPtr rfbScreen;
-    BOOL buttonWasDown;
+    BOOL buttonWasDown, isHiddenFromDock, activating;
     int32_t cgsConnectionID;
 }
 
@@ -81,7 +81,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)startServer:(id)sender {
-    [_mainWindow close];
+    [_mainWindow setIsVisible:NO];
     cgsConnectionID = CGSMainConnectionID();
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
         static dispatch_once_t onceToken;
@@ -139,8 +139,26 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     }
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-    
+- (void)applicationWillBecomeActive:(NSNotification *)notification {
+    if (isHiddenFromDock) {
+        [self showInDock];
+        activating = YES;
+        [[NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.dock"].firstObject activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    }
+}
+
+- (void)finishActivating {
+    [NSApp activateIgnoringOtherApps:YES];
+}
+
+- (void)applicationDidResignActive:(NSNotification *)notification {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (activating) {
+        activating = NO;
+        [self performSelector:@selector(finishActivating) withObject:nil afterDelay:0.1];
+    } else if (_mainWindow.visible == NO && [defaults boolForKey:@"hideFromDock"]) {
+        [self hideFromDock];
+    }
 }
 
 - (BOOL)startVNCServer:(IOSurfaceRef)buffer {
@@ -199,6 +217,13 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 - (void)hideFromDock {
     ProcessSerialNumber psn = { 0, kCurrentProcess };
     TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+    isHiddenFromDock = YES;
+}
+
+- (void)showInDock {
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+    isHiddenFromDock = NO;
 }
 
 - (void)rfbClient:(rfbClientPtr)client mouseEventAtPoint:(CGPoint)point buttonMask:(int)buttonMask {
