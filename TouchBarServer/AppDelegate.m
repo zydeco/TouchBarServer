@@ -70,10 +70,40 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
             [self startVNCServer:frameSurface];
         });
         
-        // should I use a mutex or something?
-        // TODO: find which area changed
-        memcpy(rfbScreen->frameBuffer, IOSurfaceGetBaseAddress(frameSurface), IOSurfaceGetBytesPerRow(frameSurface) * IOSurfaceGetHeight(frameSurface));
-        rfbMarkRectAsModified(rfbScreen, 0, 0, rfbScreen->width, rfbScreen->height);
+        // awful code to find changed area, somewhat
+        int chunkWidth = 64;
+        int numChunks = 1 + (rfbScreen->width / chunkWidth);
+        size_t bytesPerRow = IOSurfaceGetBytesPerRow(frameSurface);
+        if (rfbScreen->width % chunkWidth) numChunks++;
+        bool changedChunks[numChunks];
+        void *frameBase = IOSurfaceGetBaseAddress(frameSurface);
+        for (int chunk=0; chunk < numChunks; chunk++) {
+            bool changed = false;
+            for (int y=0; y < rfbScreen->height; y++) {
+                int x = chunk * chunkWidth;
+                long offset = (4*x) + (y * bytesPerRow);
+                if (memcmp(frameBase + offset, rfbScreen->frameBuffer + offset, chunkWidth*4)) {
+                    changed = true;
+                    break;
+                }
+            }
+            changedChunks[chunk] = changed;
+        }
+        
+        memcpy(rfbScreen->frameBuffer, frameBase, bytesPerRow * IOSurfaceGetHeight(frameSurface));
+        int changeStart = 0, changeEnd = -1;
+        for (int i=0; i < numChunks; i++) {
+            if (changedChunks[i]) {
+                changeEnd = i;
+            }
+        }
+        if (changeEnd >= changeStart) {
+            int changeWidth = (changeEnd - changeStart + 1) * chunkWidth;
+            if (changeStart + changeWidth >= rfbScreen->width) {
+                changeWidth = rfbScreen->width - changeStart;
+            }
+            rfbMarkRectAsModified(rfbScreen, changeStart, 0, changeWidth, rfbScreen->height);
+        }
     });
     
     DFRSetStatus(2);
