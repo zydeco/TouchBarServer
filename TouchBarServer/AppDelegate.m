@@ -65,7 +65,19 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    if (NSClassFromString(@"NSTouchBar") == nil) {
+        [self alertAndQuitWithMessage:@"Touch Bar not available" informativeText:@"Ensure you're using macOS 10.12.1 (16B2657) or later."];
+    }
+}
 
+- (void)alertAndQuitWithMessage:(NSString*)message informativeText:(NSString*)informativeText {
+    NSAlert *alert = [NSAlert new];
+    alert.alertStyle = NSAlertStyleCritical;
+    alert.messageText = message;
+    alert.informativeText = informativeText;
+    [alert addButtonWithTitle:@"Quit"];
+    [alert runModal];
+    [NSApp terminate:self];
 }
 
 - (void)startServer:(id)sender {
@@ -74,7 +86,9 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            [self startVNCServer:frameSurface];
+            if (![self startVNCServer:frameSurface]) {
+                [self alertAndQuitWithMessage:@"Could not start VNC server" informativeText:@"Check the port number and try again."];
+            }
         });
         
         // awful code to find changed area, somewhat
@@ -125,7 +139,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     }
 }
 
-- (void)startVNCServer:(IOSurfaceRef)buffer {
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    
+}
+
+- (BOOL)startVNCServer:(IOSurfaceRef)buffer {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     rfbScreen = rfbGetScreen(NULL, NULL,
                              (int)IOSurfaceGetWidth(buffer),
@@ -147,7 +165,14 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
         rfbScreen->authPasswdData = strdup(tmpfile.fileSystemRepresentation);
     }
     rfbInitServer(rfbScreen);
+    if (rfbScreen->listenSock == -1) {
+        return NO;
+    }
     rfbRunEventLoop(rfbScreen, 40, true);
+    if ([defaults boolForKey:@"hideFromDock"]) {
+        [self hideFromDock];
+    }
+    return YES;
 }
 
 - (IOHIDEventRef)createHIDEventWithPoint:(CGPoint)point button:(BOOL)button moving:(BOOL)moving {
@@ -169,6 +194,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
         CGSPostEventRecord(cgsConnectionID, recordPointer, 0xf8, 0x0);
         CFRelease(cgEvent);
     }
+}
+
+- (void)hideFromDock {
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
 }
 
 - (void)rfbClient:(rfbClientPtr)client mouseEventAtPoint:(CGPoint)point buttonMask:(int)buttonMask {
