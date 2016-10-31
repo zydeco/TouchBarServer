@@ -14,7 +14,7 @@
 		28D7A98E1DC401C000BC812A /* SkyLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D7A98D1DC401C000BC812A /* SkyLight.framework */; };
 		28D7AA4F1DC54ED900BC812A /* libvncserver.0.9.10.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */; };
 		28F245FB1DC54EED00923CAD /* libvncserver.0.9.10.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28D7AA4E1DC54ED900BC812A /* libvncserver.0.9.10.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		28F245FD1DC6264C00923CAD /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F245FC1DC6264C00923CAD /* DFRFoundation.framework */; };
+		28F245FD1DC6264C00923CAD /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F245FC1DC6264C00923CAD /* DFRFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		28F245FF1DC634EA00923CAD /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F245FE1DC634E900923CAD /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
