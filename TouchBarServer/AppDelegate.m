@@ -24,6 +24,7 @@ enum {
     kIOHIDDigitizerTransducerTypeHand
 };
 typedef uint32_t IOHIDDigitizerTransducerType;
+typedef uint32_t IOHIDEventField;
 
 typedef double IOHIDFloat;
 typedef void * IOHIDEventRef;
@@ -36,6 +37,7 @@ IOHIDEventRef IOHIDEventCreateDigitizerFingerEvent(CFAllocatorRef allocator, uin
                                                    IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat twist,
                                                    Boolean range, Boolean touch, IOOptionBits options);
 void IOHIDEventAppendEvent(IOHIDEventRef event, IOHIDEventRef childEvent);
+void IOHIDEventSetIntegerValue(IOHIDEventRef event, IOHIDEventField field, int value);
 CGEventRef DFRFoundationCreateCGEventWithHIDEvent(IOHIDEventRef hidEvent);
 typedef struct _CGSEventRecord* CGSEventRecordRef;
 CGSEventRecordRef CGEventRecordPointer(CGEventRef e);
@@ -110,7 +112,8 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 - (IOHIDEventRef)createHIDEventWithPoint:(CGPoint)point button:(BOOL)button moving:(BOOL)moving {
     uint64_t timeStamp = mach_absolute_time();
     IOHIDFloat x = point.x / rfbScreen->width;
-    IOHIDEventRef digitizerEvent = IOHIDEventCreateDigitizerEvent(kCFAllocatorDefault, timeStamp, kIOHIDDigitizerTransducerTypeHand, 0, 1, moving ? 3 : 35, 0, x, 0.5, 0.0, 0.0, 0.0, button, button, 0);
+    IOHIDEventRef digitizerEvent = IOHIDEventCreateDigitizerEvent(kCFAllocatorDefault, timeStamp, kIOHIDDigitizerTransducerTypeHand, 0, 1, moving ? 3 : 35, 0, x, 0.5, 0.0, 0.0, 0.0, button, button, 0x80010);
+    IOHIDEventSetIntegerValue(digitizerEvent, 0xb0019, 1);
     IOHIDEventRef fingerEvent = IOHIDEventCreateDigitizerFingerEvent(kCFAllocatorDefault, timeStamp, 1, 1, 3, x, 0.5, 0.0, 0.0, 0.0, button, button, 0);
     IOHIDEventAppendEvent(digitizerEvent, fingerEvent);
     return digitizerEvent;
