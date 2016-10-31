@@ -65,6 +65,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+
+}
+
+- (void)startServer:(id)sender {
+    [_mainWindow close];
     cgsConnectionID = CGSMainConnectionID();
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
         static dispatch_once_t onceToken;

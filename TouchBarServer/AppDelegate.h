@@ -10,5 +10,9 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property (weak, nonatomic) IBOutlet NSWindow *mainWindow;
+
+- (IBAction)startServer:(id)sender;
+
 @end
 
