@@ -57,7 +57,6 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 @implementation AppDelegate
 {
     CGDisplayStreamRef touchBarStream;
-    NSThread *vncThread;
     rfbScreenInfoPtr rfbScreen;
     BOOL buttonWasDown;
 }
@@ -88,7 +87,6 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)startVNCServer:(IOSurfaceRef)buffer {
-    vncThread = [[NSThread alloc] initWithTarget:self selector:@selector(runVNCServer) object:nil];
     rfbScreen = rfbGetScreen(NULL, NULL,
                              (int)IOSurfaceGetWidth(buffer),
                              (int)IOSurfaceGetHeight(buffer), 8, 3, 4);
@@ -103,14 +101,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     rfbScreen->serverFormat.blueShift = 0;
     rfbScreen->ptrAddEvent = PtrAddEvent;
     rfbInitServer(rfbScreen);
-    [vncThread start];
-}
-
-- (void)runVNCServer {
-    while (rfbIsActive(rfbScreen)) {
-        long usec = rfbScreen->deferUpdateTime*1000;
-        rfbProcessEvents(rfbScreen, usec);
-    }
+    rfbRunEventLoop(rfbScreen, 40, true);
 }
 
 - (IOHIDEventRef)createHIDEventWithPoint:(CGPoint)point button:(BOOL)button moving:(BOOL)moving {
