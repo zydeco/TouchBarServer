@@ -61,9 +61,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     CGDisplayStreamRef touchBarStream;
     rfbScreenInfoPtr rfbScreen;
     BOOL buttonWasDown;
+    int32_t cgsConnectionID;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    cgsConnectionID = CGSMainConnectionID();
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -146,6 +148,17 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     return digitizerEvent;
 }
 
+- (void)postMouseDown:(BOOL)buttonDown moving:(BOOL)moving atPoint:(CGPoint)point {
+    IOHIDEventRef *hidEvent = [self createHIDEventWithPoint:point button:buttonDown moving:moving];
+    if (hidEvent) {
+        CGEventRef cgEvent = DFRFoundationCreateCGEventWithHIDEvent(hidEvent);
+        CFRelease(hidEvent);
+        CGSEventRecordRef recordPointer = CGEventRecordPointer(cgEvent);
+        CGSPostEventRecord(cgsConnectionID, recordPointer, 0xf8, 0x0);
+        CFRelease(cgEvent);
+    }
+}
+
 - (void)rfbClient:(rfbClientPtr)client mouseEventAtPoint:(CGPoint)point buttonMask:(int)buttonMask {
     BOOL buttonDown = buttonMask & 1;
     BOOL moving = buttonDown && buttonWasDown;
@@ -154,16 +167,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
         return;
     }
     buttonWasDown = buttonDown;
-    NSLog(@"mouse %s at %g", buttonDown ? "down" : "up", point.x);
-    
-    IOHIDEventRef *hidEvent = [self createHIDEventWithPoint:point button:buttonDown moving:moving];
-    if (hidEvent) {
-        CGEventRef cgEvent = DFRFoundationCreateCGEventWithHIDEvent(hidEvent);
-        CFRelease(hidEvent);
-        CGSEventRecordRef recordPointer = CGEventRecordPointer(cgEvent);
-        CGSPostEventRecord(CGSMainConnectionID(), recordPointer, 0xf8, 0x0);
-        CFRelease(cgEvent);
-    }
+    [self postMouseDown:buttonDown moving:moving atPoint:point];
 }
 
 @end
