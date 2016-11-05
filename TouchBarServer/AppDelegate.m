@@ -11,38 +11,9 @@
 @import QuartzCore;
 
 CGDisplayStreamRef SLSDFRDisplayStreamCreate(int displayID, dispatch_queue_t queue, CGDisplayStreamFrameAvailableHandler handler);
-typedef void (^DFRStatusChangeCallback)(void * arg);
 void DFRSetStatus(int status);
 CGSize DFRGetScreenSize();
-void DFRRegisterStatusChangeCallback(DFRStatusChangeCallback callback);
-void DFRFoundationPostEventWithMouseActivity(int event);
-
-enum {
-    kIOHIDDigitizerTransducerTypeStylus  = 0,
-    kIOHIDDigitizerTransducerTypePuck,
-    kIOHIDDigitizerTransducerTypeFinger,
-    kIOHIDDigitizerTransducerTypeHand
-};
-typedef uint32_t IOHIDDigitizerTransducerType;
-typedef uint32_t IOHIDEventField;
-
-typedef double IOHIDFloat;
-typedef void * IOHIDEventRef;
-IOHIDEventRef IOHIDEventCreateDigitizerEvent(CFAllocatorRef allocator, uint64_t timeStamp, IOHIDDigitizerTransducerType type,
-                                             uint32_t index, uint32_t identity, uint32_t eventMask, uint32_t buttonMask,
-                                             IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat barrelPressure,
-                                             Boolean range, Boolean touch, IOOptionBits options);
-IOHIDEventRef IOHIDEventCreateDigitizerFingerEvent(CFAllocatorRef allocator, uint64_t timeStamp,
-                                                   uint32_t index, uint32_t identity, uint32_t eventMask,
-                                                   IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat twist,
-                                                   Boolean range, Boolean touch, IOOptionBits options);
-void IOHIDEventAppendEvent(IOHIDEventRef event, IOHIDEventRef childEvent);
-void IOHIDEventSetIntegerValue(IOHIDEventRef event, IOHIDEventField field, int value);
-CGEventRef DFRFoundationCreateCGEventWithHIDEvent(IOHIDEventRef hidEvent);
-typedef struct _CGSEventRecord* CGSEventRecordRef;
-CGSEventRecordRef CGEventRecordPointer(CGEventRef e);
-int32_t CGSMainConnectionID();
-void CGSPostEventRecord(int32_t connID, CGSEventRecordRef recordPointer, int flags1, int flags2);
+BOOL DFRFoundationPostEventWithMouseActivity(NSEventType type, NSPoint p);
 
 @interface AppDelegate ()
 
@@ -59,9 +30,9 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 @implementation AppDelegate
 {
     CGDisplayStreamRef touchBarStream;
+    CGAffineTransform pointTransform;
     rfbScreenInfoPtr rfbScreen;
     BOOL buttonWasDown, isHiddenFromDock, activating;
-    int32_t cgsConnectionID;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -95,7 +66,8 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     }
     
     [_mainWindow setIsVisible:NO];
-    cgsConnectionID = CGSMainConnectionID();
+    pointTransform = CGAffineTransformMakeScale(0.5, 0.5);
+
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -210,25 +182,9 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     return YES;
 }
 
-- (IOHIDEventRef)createHIDEventWithPoint:(CGPoint)point button:(BOOL)button moving:(BOOL)moving {
-    uint64_t timeStamp = mach_absolute_time();
-    IOHIDFloat x = point.x / rfbScreen->width;
-    IOHIDEventRef digitizerEvent = IOHIDEventCreateDigitizerEvent(kCFAllocatorDefault, timeStamp, kIOHIDDigitizerTransducerTypeHand, 0, 1, moving ? 3 : 35, 0, x, 0.5, 0.0, 0.0, 0.0, button, button, 0x80010);
-    IOHIDEventSetIntegerValue(digitizerEvent, 0xb0019, 1);
-    IOHIDEventRef fingerEvent = IOHIDEventCreateDigitizerFingerEvent(kCFAllocatorDefault, timeStamp, 1, 1, 3, x, 0.5, 0.0, 0.0, 0.0, button, button, 0);
-    IOHIDEventAppendEvent(digitizerEvent, fingerEvent);
-    return digitizerEvent;
-}
-
 - (void)postMouseDown:(BOOL)buttonDown moving:(BOOL)moving atPoint:(CGPoint)point {
-    IOHIDEventRef *hidEvent = [self createHIDEventWithPoint:point button:buttonDown moving:moving];
-    if (hidEvent) {
-        CGEventRef cgEvent = DFRFoundationCreateCGEventWithHIDEvent(hidEvent);
-        CFRelease(hidEvent);
-        CGSEventRecordRef recordPointer = CGEventRecordPointer(cgEvent);
-        CGSPostEventRecord(cgsConnectionID, recordPointer, 0xf8, 0x0);
-        CFRelease(cgEvent);
-    }
+    NSEventType type = moving ? NSEventTypeLeftMouseDragged : buttonDown ? NSEventTypeLeftMouseDown : NSEventTypeLeftMouseUp;
+    DFRFoundationPostEventWithMouseActivity(type, NSPointFromCGPoint(point));
 }
 
 - (void)hideFromDock {
@@ -251,7 +207,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
         return;
     }
     buttonWasDown = buttonDown;
-    [self postMouseDown:buttonDown moving:moving atPoint:point];
+    [self postMouseDown:buttonDown moving:moving atPoint:CGPointApplyAffineTransform(point, pointTransform)];
 }
 
 @end
