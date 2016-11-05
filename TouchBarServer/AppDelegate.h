@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet NSWindow *mainWindow;
 
 - (IBAction)startServer:(id)sender;
+- (IBAction)showHelp:(id)sender;
 
 @end
 

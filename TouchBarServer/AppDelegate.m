@@ -118,6 +118,11 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     }
 }
 
+- (void)showHelp:(id)sender {
+    NSURL *helpURL = [NSURL URLWithString:@"https://github.com/zydeco/TouchBarServer"];
+    [[NSWorkspace sharedWorkspace] openURL:helpURL];
+}
+
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     if ([self touchBarAvailable]) {
         DFRSetStatus(0);
