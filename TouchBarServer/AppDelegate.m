@@ -65,7 +65,7 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    if (NSClassFromString(@"NSTouchBar") == nil) {
+    if (![self touchBarAvailable]) {
         [self alertAndQuitWithMessage:@"Touch Bar not available" informativeText:@"Ensure you're using macOS 10.12.1 (16B2657) or later."];
     }
 }
@@ -80,7 +80,20 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
     [NSApp terminate:self];
 }
 
+- (BOOL)touchBarAvailable {
+    static dispatch_once_t onceToken;
+    static BOOL touchBarAvailable;
+    dispatch_once(&onceToken, ^{
+        touchBarAvailable = NSClassFromString(@"NSTouchBar") != nil;
+    });
+    return touchBarAvailable;
+}
+
 - (void)startServer:(id)sender {
+    if (![self touchBarAvailable]) {
+        return;
+    }
+    
     [_mainWindow setIsVisible:NO];
     cgsConnectionID = CGSMainConnectionID();
     touchBarStream = SLSDFRDisplayStreamCreate(0, dispatch_get_main_queue(), ^(CGDisplayStreamFrameStatus status, uint64_t displayTime, IOSurfaceRef  _Nullable frameSurface, CGDisplayStreamUpdateRef  _Nullable updateRef) {
@@ -127,12 +140,16 @@ void PtrAddEvent(int buttonMask, int x, int y, rfbClientPtr cl) {
         }
     });
     
-    DFRSetStatus(2);
-    CGDisplayStreamStart(touchBarStream);
+    if (touchBarStream) {
+        DFRSetStatus(2);
+        CGDisplayStreamStart(touchBarStream);
+    }
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    DFRSetStatus(0);
+    if ([self touchBarAvailable]) {
+        DFRSetStatus(0);
+    }
     if (touchBarStream) {
         CGDisplayStreamStop(touchBarStream);
         CFRelease(touchBarStream);
